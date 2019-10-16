@@ -1,0 +1,344 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    @using Microsoft.AspNetCore.Http
+@{ 
+    
+    
+}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.title</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="~/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="~/bower_components/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="~/dist/css/skins/_all-skins.min.css">
+    <!-- Morris chart -->
+    <link rel="stylesheet" href="~/bower_components/morris.js/morris.css">
+    <!-- jvectormap -->
+    <link rel="stylesheet" href="~/bower_components/jvectormap/jquery-jvectormap.css">
+    <!-- jQuery 3 -->
+    <script src="~/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="~/bower_components/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="~/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+    <script src="~/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <link rel="stylesheet" href="~/toast.css" />
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+    <!-- bootstrap wysihtml5 - text editor -->
+    <link rel="stylesheet" href="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+
+
+
+    <!-- Bootstrap 3.3.7 -->
+    <!-- Select2 -->
+    <script src="~/bower_components/select2/dist/js/select2.full.min.js"></script>
+    <!-- InputMask -->
+    <!-- Google Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+    <!-- Select2 -->
+    <link rel="stylesheet" href="~/bower_components/select2/dist/css/select2.min.css">
+    <!-- ./wrapper -->
+
+    <script>
+        $.widget.bridge('uibutton', $.ui.button);
+    </script>
+    <!-- Select2 -->
+    <script src="~/bower_components/select2/dist/js/select2.full.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="~/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Morris.js charts -->
+    <script src="~/bower_components/raphael/raphael.min.js"></script>
+    <script src="~/bower_components/morris.js/morris.min.js"></script>
+    <!-- Sparkline -->
+    <script src="~/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <!-- jvectormap -->
+    <script src="~/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="~/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="~/bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="~/bower_components/moment/min/moment.min.js"></script>
+    <!-- datepicker -->
+    <script src="~/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <!-- Bootstrap WYSIHTML5 -->
+    <script src="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+    <!-- Slimscroll -->
+    <script src="~/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="~/bower_components/fastclick/lib/fastclick.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="~/dist/js/pages/dashboard.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/dist/js/demo.js"></script>
+    <!-- DataTables -->
+    <script src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="~/snakbar.css" />
+    <script src="~/notify/notify.js"></script>
+    <script src="~/notify/styles/metro/notify-metro.js"></script>
+    <link rel="stylesheet" href="~/notify/styles/metro/notify-metro.css" />
+    <link rel="icon" href="~/images/iconfinder-icon.svg" />
+
+    <script>
+       // var uid = '@ViewData["ID"]';
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+            $('#example1').DataTable();
+            $('#example2').DataTable({
+                'paging': true,
+                'lengthChange': false,
+                'searching': false,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
+            });
+        });
+
+    </script>
+
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    <div id="snackbar"></div>
+    <div class="wrapper">
+
+        <header class="main-header">
+            <!-- Logo -->
+            <a href="#" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b>KPB</b>M</span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"><b>KiranaProductBilling</b></span>
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+
+
+
+                        <li id="notification" class="dropdown tasks-menu"></li>
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
+                                <img src="~/images/iconfinder-icon.svg" class="user-image" alt="User Image">
+
+                                <span class="hidden-xs">Admin</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+
+
+                                    <img src="~/images/iconfinder-icon.svg" class="img-circle" alt="User Image">
+
+                                    <p>
+                                        Admin
+                                    </p>
+                                </li>
+                                <!-- Menu Body -->
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="#" onclick="profil();" class="btn btn-default btn-flat">Profile</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a asp-action="Index" asp-controller="Login" class="btn btn-default btn-flat">Sign out</a>
+                                    </div>
+                                </li>
+                            </ul>
+                            <script>
+
+                                function profil() {
+                                    $("#profile").load("/Home/profile", function () {
+                                        $('#passwordchange').modal('show');
+                                    })
+
+                                }
+                            </script>
+                        </li>
+                        <!-- Control Sidebar Toggle Button -->
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <!-- Sidebar user panel -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+
+                        <img src="~/images/iconfinder-icon.svg" class="img-circle" alt="User Image">
+
+
+                    </div>
+                    <div class="pull-left info">
+                        <p>admin</p>
+                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    </div>
+                </div>
+                <!-- search form -->
+                <!-- /.search form -->
+                <!-- sidebar menu: : style can be found in sidebar.less -->
+                <ul class="sidebar-menu" data-widget="tree">
+                   
+                    <li>
+                        <a asp-action="Index" asp-controller="Home">
+                            <i class="fa fa-fw fa-dashboard"></i> <span>Dashboard</span>
+                        </a>
+                    </li>
+                   
+                     <li class="treeview">
+                        <a asp-action="" asp-controller="Home">
+                            <i class="fa fa-fw fa-user-md"></i> <span>Purchase</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a asp-action="NewPurchase" asp-controller="Home"><i class="fa fa-circle-o"></i>New Pusrchase</a></li>
+                            <li><a asp-action="ViewPurchase" asp-controller="Home"><i class="fa fa-circle-o"></i>View Purchase</a></li>
+
+
+                        </ul>
+                    </li>
+           
+                  <li class="treeview">
+                        <a asp-action="" asp-controller="Home">
+                            <i class="fa fa-fw fa-user-md"></i> <span>Stock</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+
+                            <li><a asp-action="Stock" asp-controller="Home"><i class="fa fa-circle-o"></i>Stock</a></li>
+                          
+                            <li><a asp-action="producttype" asp-controller="Home"><i class="fa fa-circle-o"></i>Product Type</a></li>
+
+                        </ul>
+                        <script>
+                            function printQRcode() {
+                                var mywindow = window.open("/Home/qrcode/" , 'Print', 'height=900,width=900');
+
+
+                                setTimeout(function () {
+                                    mywindow.focus();
+                                    mywindow.print();
+                                    //mywindow.close();
+                                }, 5000);
+
+
+
+                                return true;
+                            }
+                        </script>
+                    </li>
+                    <li class="treeview">
+                        <a asp-action="" asp-controller="Home">
+                            <i class="fa fa-fw fa-user-md"></i> <span>Sales</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a asp-action="NewSales" asp-controller="Home"><i class="fa fa-circle-o"></i>New Sales</a></li>
+                            <li><a asp-action="ViewSales" asp-controller="Home"><i class="fa fa-circle-o"></i>View Sales</a></li>
+
+
+                        </ul>
+                    </li>
+
+             
+                 
+
+
+                    <li>
+                        <a asp-action="cmpprofile" asp-controller="Home">
+                            <i class="fa fa-fw fa-edit"></i> <span>Company Profile</span>
+                        </a>
+                    </li>
+
+
+
+                </ul>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            @RenderBody()
+
+
+
+
+        </div>
+
+        <!-- /.content-wrapper -->
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 2.4.0
+            </div>
+            <strong>
+                Copyright &copy; 2018-2019 All rights
+                reserved.
+            </strong>
+        </footer>
+
+
+    </div>
+    <div class="modal fade" id="passwordchange">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Profile</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <div id="profile"></div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

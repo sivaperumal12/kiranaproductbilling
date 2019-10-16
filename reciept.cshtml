@@ -1,0 +1,224 @@
+﻿@{
+    Layout = null;
+}
+@model stockManagement.Models.pay
+<!DOCTYPE html>
+<html>
+<head>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta http-equiv="content-type" content="text-html; charset=utf-8">
+    <style type="text/css">
+        html, body, div, span, applet, object, iframe,
+        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+        a, abbr, acronym, address, big, cite, code,
+        del, dfn, em, img, ins, kbd, q, s, samp,
+        small, strike, strong, sub, sup, tt, var,
+        b, u, i, center,
+        dl, dt, dd, ol, ul, li,
+        fieldset, form, label, legend,
+        table, caption, tbody, tfoot, thead, tr, th, td,
+        article, aside, canvas, details, embed,
+        figure, figcaption, footer, header, hgroup,
+        menu, nav, output, ruby, section, summary,
+        time, mark, audio, video {
+            margin: 0;
+            padding: 0;
+            font: inherit;
+            font-size: 100%;
+            vertical-align: baseline;
+        }
+
+        html {
+            line-height: 1;
+        }
+
+        ol, ul {
+            list-style: none;
+        }
+    </style>
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="~/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Bootstrap 3.3.7 -->
+    <script src="~/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Start Page Content -->
+        <!-- ============================================================== -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-body printableArea">
+                    <h3><b>Receipt (Original Copy)</b> <span class="pull-right">Payment ID : @Model.payid</span></h3>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="pull-left">
+                                <address>
+                                    <h4> <img style="margin-top:-14px;" src="~/logo.png" height="50" width="50" /> <b class="text-danger text-center">@Model.name</b></h4>
+                                    <p class="m-l-5">
+                                        @Model.address
+                                        <br />GSTIN : @Model.gst
+                                        <br />State Name: @Model.state, Code : @Model.code
+                                        <br />CIN : U74120PY2015PTC003005
+                                        <br />PAN : @Model.pan
+                                        <br />E-Mail : @Model.email
+                                        <br />Contact : @Model.contact
+                                    </p>
+                                </address>
+                            </div>
+                            <div class="pull-right text-right">
+                                <address>
+                                    <h4>To,</h4>
+                                    <h4 class="font-bold">Party: @Model.clientname</h4>
+                                    <p style="width:300px;" class="m-l-30">
+                                        <span>@Model.clientaddress</span>
+                                        <br />GSTIN : @Model.clientgst
+                                        <br />State Name: @Model.clistate, Code : @Model.clicode
+                                        <br /> PAN : @Model.clientpan
+
+                                    </p>
+
+                                </address>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="table-responsive m-t-40" style="clear: both;">
+                                <table class="table ">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">#</th>
+                                            <th>Description</th>
+                                            <th class="text-right">Mode of Payment</th>
+                                            <th class="text-right">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-center">1</td>
+                                            <td>@Model.jbtype</td>
+                                            <td class="text-right">
+                                                @Model.pmode
+                                                <br />@Model.premark
+                                            </td>
+                                            <td class="text-right"> Rs. @Model.amount </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="pull-right m-t-30 text-right">
+
+
+                                <h3><b>Total :</b> Rs. @Model.amount</h3>
+                                <h4><b>Amount in Words :</b> <b>Rs. @Model.amountword</b></h4>
+                            </div>
+                            <div class="clearfix">
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                                <h4>Recived By</h4>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br /><br />
+    <hr>
+    <br /><br />
+    <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Start Page Content -->
+        <!-- ============================================================== -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-body printableArea">
+                    <h3><b>Receipt (Duplicate Copy)</b> <span class="pull-right">Payment ID : @Model.payid</span></h3>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="pull-left">
+                                <address>
+                                    <h4> <img style="margin-top:-14px;" src="~/logo.png" height="50" width="50" /> <b class="text-danger text-center">@Model.name</b></h4>
+                                    <p class="m-l-5">
+                                        @Model.address
+                                        <br />GSTIN : @Model.gst
+                                        <br />State Name: @Model.state, Code : @Model.code
+                                        <br />CIN : U74120PY2015PTC003005
+                                        <br />PAN : @Model.pan
+                                        <br />E-Mail: @Model.email
+                                        <br />Contact: @Model.contact
+                                    </p>
+                                </address>
+                            </div>
+                            <div class="pull-right text-right">
+                                <address>
+                                    <h4>To,</h4>
+                                    <h4 class="font-bold">Party: @Model.clientname</h4>
+                                    <p style="width:300px;" class="m-l-30">
+                                        <span>@Model.clientaddress</span>
+                                        <br />GSTIN : @Model.clientgst
+                                        <br />State Name: @Model.clistate, Code : @Model.clicode
+                                        <br /> PAN : @Model.clientpan
+
+                                    </p>
+
+                                </address>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="table-responsive m-t-40" style="clear: both;">
+                                <table class="table ">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">#</th>
+                                            <th>Description</th>
+                                            <th class="text-right">Mode of Payment</th>
+                                            <th class="text-right">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-center">1</td>
+                                            <td>@Model.jbtype</td>
+                                            <td class="text-right">
+                                                @Model.pmode
+                                                <br />@Model.premark
+                                            </td>
+                                            <td class="text-right"> Rs. @Model.amount </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="pull-right m-t-30 text-right">
+
+
+                                <h3><b>Total :</b> Rs. @Model.amount</h3>
+                                <h4><b>Amount in Words : Rs. @Model.amountword</b></h4>
+                            </div>
+                            <div class="clearfix">
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                                <h4>Recived By</h4>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

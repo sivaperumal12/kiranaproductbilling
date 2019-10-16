@@ -1,0 +1,65 @@
+﻿@{ 
+
+}
+<form asp-action="Addneitemsub" method="post" enctype="multipart/form-data" asp-controller="Home">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+
+                <label class="required">Name</label>
+                <input name="name" id="name" type="text" required class="form-control" style="width: 60%;">
+            </div>
+            <div class="form-group">
+                <label class="required">Type</label><br />
+                <select name="type" id="type" required class="form-control select2" style="width: 60%;">
+                    <option value="">Please Select</option>
+                    @foreach (var itm in ViewBag.typ)
+                    {
+                        <option value="@itm.name">@itm.name</option>
+                    }
+
+                </select>
+
+            </div>
+            <div class="form-group">
+                <label class="required">Common Name</label>
+                <input name="CommonName" id="CommonName" type="text" required class="form-control" style="width: 60%;">
+
+            </div>
+            <div class="form-group">
+                <label class="required">Company</label>
+                <input name="company" id="company" type="text" required class="form-control" style="width: 60%;">
+
+            </div>
+            <div class="form-group">
+                <label class="required">MRP</label>
+                <input name="mrp" id="mrp" type="text" required class="form-control" style="width: 60%;">
+
+            </div>
+            <div class="form-group">
+                <label class="required">TAX</label>
+                <input name="tax" id="tax" type="text" required class="form-control" style="width: 60%;">
+
+            </div>
+            <div class="form-group">
+                <label class="required">discount (%)</label>
+                <input name="dicount" value="0" id="discount" type="text" required class="form-control" style="width: 60%;">
+
+            </div>
+            <div class="form-group">
+                <label class="required">Photo</label>
+                <input name="photo" id="photo" type="file" required class="form-control" style="width: 60%;">
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <button type="reset" class="btn  btn-primary">Cancel</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+</form>
+<script>
+    $('.select2').select2();
+</script>

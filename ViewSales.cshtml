@@ -1,0 +1,179 @@
+﻿@{
+    ViewBag.title = "View Sales";
+}
+<link rel="stylesheet" type="text/css" href="~/demo.css" />
+<link rel="stylesheet" type="text/css" href="~/tabs.css" />
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">View Sales</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+
+                                <th>Sales ID</th>
+                                <th>Client Phone</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Done By</th>
+
+                                <th>Date</th>
+                                <th>Action</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var itm in ViewBag.usr)
+                            {
+                                <tr>
+                                    <td>@itm.ID</td>
+                                    <td><a href="#" onclick="showsalesditails(@itm.ID);">@itm.sid</a> </td>
+                                    <td>@itm.clid</td>
+
+                                    <td>@itm.tamt</td>
+
+                                    <td>@itm.status</td>
+                                    <td>@itm.aoeid</td>
+                                    <td>@itm.cdate</td>
+                                    <td><a title="Cancel" onclick="del(@itm.ID)" class="btn btn-primary"><i class="fa fa-remove"></i></a><a class="btn btn-primary" onclick="printElem(@itm.sid);" title="Download"><i class="fa fa-download"></i></a></td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </div>
+
+    <script>
+
+        var id; // global variable
+         var sts = '@ViewBag.sts';
+    $(document).ready(function () {
+        if (sts != "") {
+            var x = document.getElementById("snackbar");
+            x.innerHTML = sts;
+            if (sts.includes("Successfully")) {
+                x.style.backgroundColor = "#4BB543";
+            }
+            else {
+                x.style.backgroundColor = "#ff0011";
+            }
+            
+            x.className = "show";
+            setTimeout(function () { x.className = x.className.replace("show", ""); }, 6000);
+        }
+        });
+        function printElem(id) {
+
+            var mywindow = window.open("/Home/bill/" + id, 'Print', 'height=900,width=900');
+
+
+            setTimeout(function () {
+                mywindow.focus();
+                mywindow.print();
+                //mywindow.close();
+            }, 5000);
+
+
+
+            return true;
+        }
+        function showsalesditails(id) {
+            $.ajax({
+                url: '/Home/GetPditem',
+                type: 'POST',
+                data: {
+                    'ID': id,
+
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var dat = JSON.parse(data.content);
+                   
+                    var html = '<div class="conveytabs"><input id="tab1" type="radio" name="tabs" checked><label for="tab1">Products</label><input id="tab2" type="radio" name="tabs"><label for="tab2">Snapchat</label><section id="content2"><img height="50" width="50" src="data:image/png;base64,' + data.photo +'" ></section> <section id="content1">';
+                    html += '<table id="example1" class="table table-bordered table-striped"> <thead><tr><th>Name</th><th>Type</th><th>Common Name</th><th>MRP</th><th>TAX</th><th>Quantity</th></tr ></thead ><tbody>';
+                    for (var i = 0; i < dat.length; i++) {
+
+                        var obj = dat[i];
+                        html += '<tr><td>' + obj.name + '</td><td>' + obj.type + '</td><td>' + obj.cmname + '</td><td>' + obj.mrp + '</td><td>' + obj.tax + '</td><td>' + obj.qty + '</td></tr>';
+
+                    }
+
+
+                    html += '</tbody></<table></section></div>';
+                    document.getElementById("contentdata").innerHTML = html;
+                    $("#salesdet").modal("show");
+
+                },
+                error: function (request, error) {
+                    alert("Request: " + JSON.stringify(request));
+                }
+            });
+        }
+        function del(eid) {
+            $("#ID").val(eid);
+            $('#delete').modal('show');
+        }
+       
+    </script>
+</section>
+
+
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form  asp-action="Cancelsales" asp-controller="Home">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title custom_align" id="Heading">Cancel this Sales entry </h4>
+
+                </div>
+                <div class="modal-body">
+
+                    <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure you want to Cancel this Record?</div>
+                    <input name="ID" hidden id="ID" type="text" />
+                    <div class="form-group">
+                        <label for="comment">Reason for Delete:</label>
+                        <textarea required class="form-control" rows="5" name="reason" cols="50" id="comment"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer ">
+                    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok-sign"></span> Yes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> No</button>
+                </div>
+            </form>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+<div class="modal fade" id="salesdet" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Sales Item in Details</h4>
+            </div>
+            <div class="modal-body">
+                <div id="contentdata"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

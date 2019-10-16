@@ -1,0 +1,45 @@
+﻿@{
+
+}
+<form asp-action="passchange" asp-controller="Home" method="post"  >
+    <div class="row">
+        <div class="col-md-12 text-center">
+            
+
+            <div class="form-group">
+                <label class="required">New Password</label>
+                <input type="password"  name="newpass" required id="password" placeholder="New Password"  class="form-control">
+            </div>
+            <div class="form-group">
+                <label class="required">Confirm Password</label>
+                <input name="confirmpass"  required type="password" id="confirm_password" placeholder="Confirm Password" class="form-control">
+            </div>
+
+            </div>
+
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <button type="reset" class="btn  btn-primary">Cancel</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+</form>
+<script>
+    
+    var password = document.getElementById("password")
+        , confirm_password = document.getElementById("confirm_password");
+
+    function validatePassword() {
+        if (password.value != confirm_password.value) {
+            confirm_password.setCustomValidity("Passwords Don't Match");
+        } else {
+            confirm_password.setCustomValidity('');
+        }
+    }
+
+    password.onchange = validatePassword;
+    confirm_password.onkeyup = validatePassword;
+</script>

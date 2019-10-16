@@ -1,0 +1,83 @@
+﻿@model stockManagement.Models.stock
+<form asp-action="UpdateStocksub" method="post" enctype="multipart/form-data" asp-controller="Home">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <div class="form-group">
+
+                    <label class="required">Name</label>
+                    <input name="name" value="@Model.name" id="name" type="text" required class="form-control">
+                    <input name="ID" value="@Model.ID" id="name" type="hidden" required class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="required">Type</label>
+                    <select name="type" id="type" required class="form-control select2">
+                        <option value="">Please Select</option>
+                        @foreach (var itm in ViewBag.typ)
+                        {
+                            @if (Model.type == itm.name)
+                            {
+                                <option selected value="@itm.name">@itm.name</option>
+                            }
+                            else
+                            {
+                                <option value="@itm.name">@itm.name</option>
+                            }
+
+                        }
+
+                    </select>
+
+                </div>
+                <div class="form-group">
+                    <label class="required">Common Name</label>
+                    <input name="CommonName" value="@Model.cmname" id="CommonName" type="text" required class="form-control">
+
+                </div>
+                <div class="form-group">
+                    <label class="required">Company</label>
+                    <input name="company" value="@Model.company" id="company" type="text" required class="form-control">
+
+                </div>
+                <div class="form-group">
+                    <label class="required">MRP</label>
+                    <input name="mrp" id="mrp" value="@Model.mrp" type="text" required class="form-control">
+
+                </div>
+                <div class="form-group">
+                    <label class="required">TAX</label>
+                    <input name="tax" id="tax" type="text" value="@Model.tax" required class="form-control">
+
+                </div>
+                <div class="form-group">
+                    <label class="required">discount (%)</label>
+                    <input name="dicount" value="@Model.discount" id="discount" type="text" required class="form-control">
+
+                </div>
+                <div class="form-group">
+                    <label class="required">Minimum Alert Amount</label>
+                    <input name="minalert" value="@Model.minalert" id="minalert" type="text" required class="form-control">
+
+                </div>
+                <div class="form-group">
+                    <label class="required">Photo</label>
+                    <input name="photo" id="photo" type="file" class="form-control">
+
+                </div>
+            </div>
+            <div class="col-md-4"></div>
+
+        
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <button type="reset" class="btn  btn-primary">Cancel</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+</form>
+<script>
+    $('.select2').select2();
+</script>

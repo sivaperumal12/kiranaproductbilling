@@ -1,0 +1,131 @@
+﻿@{
+    ViewBag.title = "New Client";
+}
+<script>
+    var sts = '@ViewBag.sts';
+    $(document).ready(function () {
+        if (sts != "") {
+             var x = document.getElementById("snackbar");
+            x.innerHTML = sts;
+            if (sts.includes("Successfully")) {
+                x.style.backgroundColor = "#4BB543";
+            }
+            else {
+                x.style.backgroundColor = "#ff0011";
+            }
+            
+            x.className = "show";
+            setTimeout(function () { x.className = x.className.replace("show", ""); }, 6000);
+        }
+    });
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+</script>
+<style>
+    .required:after {
+        content: "  *";
+        font-weight: bold;
+        color: red;
+    }
+</style>
+<section class="content-header">
+    <h1>
+        Create New Employee
+    </h1>
+    <ol class="breadcrumb"></ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- SELECT2 EXAMPLE -->
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Employee Creation</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <form asp-action="Clientcreate" method="post" enctype="multipart/form-data" asp-controller="Home">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="required">Name</label>
+                            <input type="text" required name="name" id="name" class="form-control">
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label class="required">Gender</label>
+                            <select name="gender" required class="form-control select2" style="width: 100%;">
+                                <option value="">Please Select</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Contact Number</label>
+                            <input type="text" name="phone" required id="mobile" onkeypress="return isNumberKey(event)" maxlength="10" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="required">e-Mail</label>
+                            <input name="email" required type="email" id="email" class="form-control">
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="required">GST</label>
+                            <input type="text" name="gst" id="gst" class="form-control">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="required">PAN</label>
+                            <input type="text" name="gst" id="gst" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required">Address</label>
+                            <textarea type="text" id="address" name="address" class="form-control" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">state</label>
+                            <select name="state" required class="form-control select2" style="width: 100%;">
+                                <option value="">Please Select</option>
+                                @foreach (var itm in ViewBag.stat)
+                                {
+                                    <option value="@itm.name">@itm.name</option>
+                                }
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <button type="reset" class="btn  btn-primary">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- /.row -->
+        </div>
+        <!-- /.box-body -->
+
+    </div>
+    <!-- /.box -->
+</section>

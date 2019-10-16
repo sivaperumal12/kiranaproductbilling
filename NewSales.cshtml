@@ -1,0 +1,753 @@
+﻿@using Microsoft.AspNetCore.Http
+
+@{
+    ViewBag.title = "New Sales";
+    var stkdat = Context.Session.GetString("prdstksls");
+    var sts = Context.Session.GetString("sts");
+
+}
+
+
+<style>
+    .required:after {
+        content: "  *";
+        font-weight: bold;
+        color: red;
+    }
+</style>
+
+<section class="content-header">
+    <h1>
+        New Sales
+    </h1>
+    <ol class="breadcrumb"></ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- SELECT2 EXAMPLE -->
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Sales</h3>
+
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body" style="padding:40px;">
+
+            <!--<form asp-action="newsalesSub" method="post" enctype="multipart/form-data" asp-controller="Home">-->
+            <form action="javascript:void(0);" onSubmit="NewSalesSubmit()">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+
+                            <label class="required">Select Client</label>
+                            <select required name="cltname" id="cltname" onchange="cuschange();" class="form-control select2" style="width: 60%;">
+                                <option value="">--Please Select--</option>
+                                <option value="Non GST Customer">Non GST Customer</option>
+                                @foreach (var itm in ViewBag.clt)
+                                {
+
+                                    <option value="@itm.phone">@itm.name - @itm.phone</option>
+
+
+                                }
+
+                            </select>
+
+                        </div>
+                        <div hidden id="cusname" class="form-group">
+
+                            <label>Customer Name</label>
+                            <input type="text" name="cusname" id="cusname" class="form-control" style="width: 60%;">
+                        </div>
+                        <input name="addprd" id="addprd" onclick="addprod();" value="Add Product" type="button" class="btn btn-primary">
+
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <video name="preview" style="width:100%; height:100%" id="preview"></video>
+                            </div>
+                            <div class="col-lg-3">
+                                <canvas id="canvas1" style="width:100%; height:100%"></canvas>
+                            </div>
+                            <div class="col-lg-3">
+
+                                <div id="output"></div>
+                                <canvas id="canvas2" style="width:100%; height:100%"></canvas>
+                            </div>
+                            <div class="col-lg-3">
+                                <a onclick="addProductByimage();" class="btn btn-primary">Add Product By Image</a><br />
+                                <!--
+         <br />
+      <input type="file" name="photo"  id="photo" /><br />
+      <a onclick="uploadFileData();" class="btn btn-primary">Upload</a>
+    -->
+
+                            </div>
+
+
+                        </div>
+
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">Added Lists</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+
+                                            <th>Name</th>
+                                            <th>Type</th>
+                                            <th>Common Name</th>
+                                            <th>MRP</th>
+                                            <th>TAX</th>
+                                            <th>Quantity</th>
+                                            <th>Discount %</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tablitms"></tbody>
+
+                                </table>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <div class="form-group">
+
+                            <label class="required">Total Amount</label>
+                            <input type="text" readonly value="0" required name="tamt" id="tamt" class="form-control" style="width: 60%;">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required">Total Tax</label>
+                            <input name="ttax" readonly value="0" id="ttax" type="text" required class="form-control" style="width: 60%;">
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Over All Discount (seperate discount not be accounted)</label>
+                            <input name="tdiscont" value="0" onchange="discountcheck();" id="tdiscont" type="text" min="0" onkeypress="return isNumberKey(event)" required class="form-control" style="width: 60%;">
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Grand Total</label>
+                            <input name="ttot" readonly value="0" id="ttot" type="text" required class="form-control" style="width: 60%;">
+
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Paid</label>
+                            <input name="paid" value="0" onchange="balcheck();" onkeypress="return isNumberKey(event)" id="paid" type="text" required class="form-control" style="width: 60%;">
+
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Balance</label>
+                            <input name="bal" readonly value="0" id="bal" type="text" required class="form-control" style="width: 60%;">
+
+                        </div>
+
+
+
+                    </div>
+
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <button type="reset" class="btn  btn-primary">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- /.row -->
+        </div>
+        <!-- /.box-body -->
+
+    </div>
+
+    <!-- /.box -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Product</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+
+                                <label class="required">Select Product</label>
+                                <select id="pid" name="pid" required class="form-control select2" style="width: 60%;">
+                                    <option value="">Please Select</option>
+                                    @foreach (var itm in ViewBag.prd)
+                                    {
+                                        <option value="@itm.pid">@itm.name</option>
+                                    }
+
+                                </select>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label class="required">Quantity</label>
+                                <input name="qty" id="qty" value="0" type="text" required class="form-control" style="width: 60%;">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+
+                            <button type="button" id="addprodsalesub" onclick="addprodsalesub();" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $('.select2').select2();
+</script>
+<script src="~/js/instascan.min.js"></script>
+<script src="~/js/build/tracking-min.js"></script>
+<script type="text/javascript">
+    var sts = '@sts';
+    var video, $output;
+    var scale = 0.25;
+
+    var initialize = function () {
+        $output = $("#output");
+        video = $("#preview").get(0);
+
+    };
+
+    var captureImage = function () {
+        var canvas2 = document.createElement("canvas");
+        canvas2.width = video.videoWidth * scale;
+        canvas2.height = video.videoHeight * scale;
+        canvas2.getContext('2d')
+            .drawImage(video, 0, 0, canvas2.width, canvas2.height);
+
+        var img = '<img style="width:100%;height:100%;" src="' + canvas2.toDataURL('image/jpeg') + '" >';
+        img += '<input type="hidden" name="image" id="image" value="' + canvas2.toDataURL() + '" />';
+
+        
+        document.getElementById("output").innerHTML = img;
+        
+
+
+    };
+
+    $(initialize);
+    function addProductByimage() {
+        
+        captureImage();
+        doFindFeatures();
+          
+    }
+
+    let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+    scanner.addListener('scan', function (content) {
+
+      
+
+    });
+
+    Instascan.Camera.getCameras().then(function (cameras) {
+        if (cameras.length > 0) {
+            // alert(JSON.stringify(cameras));
+            scanner.start(cameras[0]);
+        } else {
+            console.error('No cameras found.');
+        }
+    }).catch(function (e) {
+        console.error(e);
+        });
+    var skt = '@Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.prd)';
+    var canvas1 = document.getElementById('canvas1');
+    var context = canvas1.getContext('2d');
+    
+
+    window.fastThreshold = 30;
+    window.descriptorLength = 256;
+    window.matchesShown = 30;
+    window.blurRadius = 3;
+    var doFindFeatures =  function () {
+        var width = video.videoWidth * scale;
+        var height = video.videoHeight * scale;
+        var prd = JSON.parse(skt.replace(/&quot;/g, '"'));
+        tracking.Fast.THRESHOLD = window.fastThreshold;
+        tracking.Brief.N = 256;
+        var scenecanvas = document.createElement("canvas");
+       
+       
+        var sceneContext = scenecanvas.getContext('2d');
+
+        sceneContext.drawImage(video, 0, 0, width, height);
+
+        var imageSceneData = sceneContext.getImageData(0, 0, width, height);
+        var grayScene = tracking.Image.grayscale(tracking.Image.blur(imageSceneData.data, width, height, blurRadius), width, height);
+        var cornersScene = tracking.Fast.findCorners(grayScene, width, height);
+        var descriptorsScene = tracking.Brief.getDescriptors(grayScene, width, cornersScene);
+
+        cnt = [];
+        matx = [];
+        
+
+        for (var i = 0; i < prd.length; i++) {
+            var obj = prd[i];
+           
+            var img = new Image();
+            img.onload = function () {
+
+                context.drawImage(img, 0, 0, canvas1.width, canvas1.height);
+            };
+            img.src = 'data:image/png;base64,' + obj.photo.replace(/&#x2B;/g, '+');
+            
+            var imageData = context.getImageData(0, 0, canvas1.width, canvas1.height);
+            var gray = tracking.Image.grayscale(tracking.Image.blur(imageData.data, canvas1.width, canvas1.height, blurRadius), canvas1.width, canvas1.height);
+            var corners = tracking.Fast.findCorners(gray, canvas1.width, canvas1.height);
+            var descriptors = tracking.Brief.getDescriptors(gray, canvas1.width, corners);
+           var matches = tracking.Brief.reciprocalMatch(cornersScene, descriptorsScene, corners, descriptors);
+            cnt[i] = matches.length;
+            alert(matches.length);
+            matx[i] = matches;
+          
+      
+        }
+       
+        var max = cnt[0]
+        var index = 0;
+        alert(JSON.stringify(cnt));
+        for (var i = 0; i < cnt.length; i++)
+        {
+            if (max < cnt[i]) {
+                max = cnt[i];
+                index = i;
+            }
+        }
+        var mm = matx[index];
+        mm.sort(function (a, b) {
+            return b.confidence - a.confidence;
+        });
+        var p = prd[index];
+        var img = new Image();
+        img.onload = function () {
+
+            context.drawImage(img, 0, 0, canvas1.width, canvas1.height);
+        };
+        img.src = 'data:image/png;base64,' + p.photo.replace(/&#x2B;/g, '+');
+        $.ajax({
+
+            url: '/Home/addprodsalesub',
+            type: 'POST',
+            data: {
+                'pid': p.pid,
+                'qty': '1'
+            },
+            dataType: 'json',
+            success: function (data) {
+
+                sktd = JSON.stringify(data);
+                beep();
+                renderdata();
+                
+
+            },
+            error: function (request, error) {
+                alert("Request: " + JSON.stringify(error));
+            }
+        });
+        for (var i = 0; i < Math.min(window.matchesShown, mm.length); i++) {
+            var color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+            context.fillStyle = color;
+            context.strokeStyle = color;
+            context.fillRect(mm[i].keypoint1[0], mm[i].keypoint1[1], 4, 4);
+            context.fillRect(mm[i].keypoint2[0] + width, mm[i].keypoint2[1], 4, 4);
+
+            context.beginPath();
+            context.moveTo(mm[i].keypoint1[0], mm[i].keypoint1[1]);
+            context.lineTo(mm[i].keypoint2[0] + width, mm[i].keypoint2[1]);
+            context.stroke();
+
+        }
+
+
+        
+        
+
+    }
+
+  
+
+
+
+    function cuschange() {
+        if ($("#cltname").val() == "Non GST Customer") {
+            $("#cusname").show();
+        }
+        else {
+            $("#cusname").hide();
+        }
+
+    }
+    function beep() {
+        var snd = new Audio("data:audio/wav;base64,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qJrx4KOQjahZxWbcZgztj2c49nKmkId44S71j0c8eV9yDK6uPRzx5X18eDvjvQ6yKo9ZSS6l//8elePK/Lf//IInrOF/FvDoADYAGBMGb7FtErm5MXMlmPAJQVgWta7Zx2go+8xJ0UiCb8LHHdftWyLJE0QIAIsI+UbXu67dZMjmgDGCGl1H+vpF4NSDckSIkk7Vd+sxEhBQMRU8j/12UIRhzSaUdQ+rQU5kGeFxm+hb1oh6pWWmv3uvmReDl0UnvtapVaIzo1jZbf/pD6ElLqSX+rUmOQNpJFa/r+sa4e/pBlAABoAAAAA3CUgShLdGIxsY7AUABPRrgCABdDuQ5GC7DqPQCgbbJUAoRSUj+NIEig0YfyWUho1VBBBA//uQZB4ABZx5zfMakeAAAAmwAAAAF5F3P0w9GtAAACfAAAAAwLhMDmAYWMgVEG1U0FIGCBgXBXAtfMH10000EEEEEECUBYln03TTTdNBDZopopYvrTTdNa325mImNg3TTPV9q3pmY0xoO6bv3r00y+IDGid/9aaaZTGMuj9mpu9Mpio1dXrr5HERTZSmqU36A3CumzN/9Robv/Xx4v9ijkSRSNLQhAWumap82WRSBUqXStV/YcS+XVLnSS+WLDroqArFkMEsAS+eWmrUzrO0oEmE40RlMZ5+ODIkAyKAGUwZ3mVKmcamcJnMW26MRPgUw6j+LkhyHGVGYjSUUKNpuJUQoOIAyDvEyG8S5yfK6dhZc0Tx1KI/gviKL6qvvFs1+bWtaz58uUNnryq6kt5RzOCkPWlVqVX2a/EEBUdU1KrXLf40GoiiFXK///qpoiDXrOgqDR38JB0bw7SoL+ZB9o1RCkQjQ2CBYZKd/+VJxZRRZlqSkKiws0WFxUyCwsKiMy7hUVFhIaCrNQsKkTIsLivwKKigsj8XYlwt/WKi2N4d//uQRCSAAjURNIHpMZBGYiaQPSYyAAABLAAAAAAAACWAAAAApUF/Mg+0aohSIRobBAsMlO//Kk4soosy1JSFRYWaLC4qZBYWFRGZdwqKiwkNBVmoWFSJkWFxX4FFRQWR+LsS4W/rFRb/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////VEFHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU291bmRib3kuZGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMjAwNGh0dHA6Ly93d3cuc291bmRib3kuZGUAAAAAAAAAACU=");
+        snd.play();
+    }
+    function uploadFileData() {
+        var formData = new FormData();
+        formData.append('photo', $('#photo')[0].files[0]);
+        var prd = JSON.parse(skt.replace(/&quot;/g, '"'));
+        tracking.Fast.THRESHOLD = window.fastThreshold;
+        tracking.Brief.N = 512;
+        var scenecanvas = document.getElementById("canvas2");
+        var width = scenecanvas.width;
+        var height = scenecanvas.height;
+        var sceneContext = scenecanvas.getContext('2d');
+        var file = $('#photo')[0].files[0];
+      
+        var imageSceneData = sceneContext.getImageData(0, 0, width, height);
+        var grayScene = tracking.Image.grayscale(tracking.Image.blur(imageSceneData.data, width, height, blurRadius), width, height);
+        var cornersScene = tracking.Fast.findCorners(grayScene, width, height);
+        var descriptorsScene = tracking.Brief.getDescriptors(grayScene, width, cornersScene);
+
+        alert(cornersScene.length);
+        
+        for (var i = 0; i < prd.length; i++) {
+            var obj = prd[i];
+
+            var img = new Image();
+            img.onload = function () {
+
+                context.drawImage(img, 0, 0, canvas1.width, canvas1.height);
+            };
+            img.src = 'data:image/png;base64,' + obj.photo.replace(/&#x2B;/g, '+');
+
+            var imageData = context.getImageData(0, 0, canvas1.width, canvas1.height);
+            var gray = tracking.Image.grayscale(tracking.Image.blur(imageData.data, canvas1.width, canvas1.height, blurRadius), canvas1.width, canvas1.height);
+            var corners = tracking.Fast.findCorners(gray, canvas1.width, canvas1.height);
+            var descriptors = tracking.Brief.getDescriptors(gray, canvas1.width, corners);
+            var matches = tracking.Brief.reciprocalMatch(cornersScene, descriptorsScene, corners, descriptors);
+            
+
+
+
+      
+        }
+        
+       
+    }
+
+</script>
+<script>
+         var sts = '@ViewBag.sts';
+    var sktd = '@stkdat';
+
+    $(document).ready(function () {
+
+        renderdata();
+
+
+    });
+    var tamt = 0;
+    var ttax = 0;
+    var gtot = 0;
+    function renderdata() {
+
+        var pdt = JSON.parse(sktd.replace(/&quot;/g, '"'));
+
+        var html = '';
+         tamt = 0;
+         ttax = 0;
+         gtot = 0;
+        var discnt = 0;
+        for (var i = 0; i < pdt.length; i++) {
+            var obj = pdt[i];
+            tamt = parseInt(tamt) + (parseInt(obj.mrp) * parseInt(obj.qty));
+            discnt = (parseInt(obj.mrp) * (parseInt(obj.discount) / 100)) * parseInt(obj.qty);
+            ttax += ((parseInt(obj.mrp) * (parseInt(obj.tax) / 100))) * parseInt(obj.qty);
+            gtot += parseInt(tamt) + parseInt(ttax) - parseInt(discnt);
+            html += '<tr><td><img class="img-circle" width="50" height="50" alt="Stock Image" src="data:image/png;base64,' + obj.photo + '" /></td><td>' + obj.name + '</td><td>' + obj.type + '</td><td>' + obj.cmname + '</td><td>' + obj.mrp + '</td><td>' + obj.tax + '</td><td><input type="number" min="1" id="qty'+ obj.id +'" name="qty'+ obj.ID +'" value="' + obj.qty + '"  onchange="qtychange('+obj.id+');"></td><td><input type="text" id="' + obj.id + '" onchange="adddiscount(' + obj.id + ')" name="' + obj.pid + '" value="' + obj.discount + '"></td><td><a  onclick="removeitm('+obj.id+');" class="btn btn-primary a-btn-slide-text"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span><strong>Remove</strong></span></a></td></tr>';
+        }
+       // alert(ttax);
+        document.getElementById("tamt").value =tamt;
+       document.getElementById("ttax").value =ttax;
+        document.getElementById("ttot").value =gtot;
+       document.getElementById("paid").value =gtot;
+        document.getElementById('tablitms').innerHTML = html;
+
+    }
+    function addprodsalesub() {
+        var pid = $("#pid").val();
+        var qty = $("#qty").val();
+        if (qty > 0) {
+            $.ajax({
+
+                url: '/Home/addprodsalesub',
+                type: 'POST',
+                data: {
+                    'pid': pid,
+                    'qty': qty
+                },
+                dataType: 'json',
+                success: function (data) {
+                    sktd = JSON.stringify(data);
+                    renderdata();
+
+                },
+                error: function (request, error) {
+                    $("#myModal").modal("hide");
+                    var x = document.getElementById("snackbar");
+                    x.innerHTML = request.responseText;
+                    x.style.backgroundColor = "#ff0011";
+                    x.className = "show";
+                    setTimeout(function () { x.className = x.className.replace("show", ""); }, 6000);
+                }
+            });
+        }
+        else {
+            alert('Quantity should be greater than 0');
+        }
+
+    }
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+    function qtychange(id) {
+        //alert(id);
+        var dat = $("#qty" + id).val();
+        if (dat > 0) {
+            $.ajax({
+
+                url: '/Home/qtychangeonsales',
+                type: 'POST',
+                data: {
+                    'ID': id,
+                    'qty': dat
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    sktd = JSON.stringify(data);
+                    tamt = 0;
+                    ttax = 0;
+                    gtot = 0;
+                    var discnt = 0;
+                    for (var i = 0; i < data.length; i++) {
+                        var obj = data[i];
+                        tamt = parseInt(tamt) + (parseInt(obj.mrp) * parseInt(obj.qty));
+                        discnt = (parseInt(obj.mrp) * (parseInt(obj.discount) / 100)) * parseInt(obj.qty);
+                        ttax += ((parseInt(obj.mrp) * (parseInt(obj.tax) / 100))) * parseInt(obj.qty);
+                        gtot += parseInt(tamt) + parseInt(ttax) - parseInt(discnt);
+                    }
+
+                    document.getElementById("tamt").value = tamt;
+                    document.getElementById("ttax").value = ttax;
+                    document.getElementById("ttot").value = gtot;
+                    document.getElementById("paid").value = gtot;
+
+                },
+                error: function (request, error) {
+
+                    var x = document.getElementById("snackbar");
+                    x.innerHTML = request.responseText;
+                    x.style.backgroundColor = "#ff0011";
+                    x.className = "show";
+                    setTimeout(function () { x.className = x.className.replace("show", ""); }, 6000);
+                }
+            });
+        }
+        else {
+            alert("quantity should be of minimun 1");
+        }
+
+    }
+    function adddiscount(id) {
+        //alert(id);
+        var dat=$("#"+id).val();
+        $.ajax({
+
+            url: '/Home/discountchangeonsales',
+            type: 'POST',
+            data: {
+                'ID': id,
+                'disc': dat
+            },
+            dataType: 'json',
+            success: function (data) {
+
+                sktd = JSON.stringify(data);
+                 tamt = 0;
+         ttax = 0;
+         gtot = 0;
+        var discnt = 0;
+                for (var i = 0; i < data.length; i++) {
+                    var obj = data[i];
+            tamt = parseInt(tamt) + (parseInt(obj.mrp) * parseInt(obj.qty));
+            discnt = (parseInt(obj.mrp) * (parseInt(obj.discount) / 100)) * parseInt(obj.qty);
+            ttax += ((parseInt(obj.mrp) * (parseInt(obj.tax) / 100))) * parseInt(obj.qty);
+            gtot += parseInt(tamt) + parseInt(ttax) - parseInt(discnt);
+           }
+
+        document.getElementById("tamt").value =tamt;
+       document.getElementById("ttax").value =ttax;
+        document.getElementById("ttot").value =gtot;
+       document.getElementById("paid").value =gtot;
+
+            },
+            error: function (request, error) {
+                var x = document.getElementById("snackbar");
+                x.innerHTML = request.responseText;
+                x.style.backgroundColor = "#ff0011";
+                x.className = "show";
+                setTimeout(function () { x.className = x.className.replace("show", ""); }, 6000);
+            }
+        });
+    }
+        function addprod() {
+
+            $("#myModal").modal("show");
+
+    }
+    function removeitm(id) {
+
+        var pdt = JSON.parse(sktd.replace(/&quot;/g, '"'));
+        for (var i = 0; i < pdt.length; i++) {
+            var obj = pdt[i];
+
+            if (obj.id == id) {
+
+
+
+                $.ajax({
+
+                    url: '/Home/pdtsaleremove/' ,
+                    type: 'POST',
+                    data: {
+
+                        'pid': obj.pid
+
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        sktd = JSON.stringify(data);
+                        beep();
+                        renderdata();
+
+                    },
+                    error: function (request, error) {
+                        var x = document.getElementById("snackbar");
+                        x.innerHTML = request.responseText;
+                        x.style.backgroundColor = "#ff0011";
+                        x.className = "show";
+                        setTimeout(function () { x.className = x.className.replace("show", ""); }, 6000);
+                    }
+                });
+            }
+        }
+
+    }
+        function balcheck() {
+            var tot = $("#ttot").val();
+            var paid = $("#paid").val();
+            var bal = tot - paid;
+            $("#bal").val(bal);
+    }
+    function discountcheck() {
+
+        var GTAX = $("#tdiscont").val();
+      var  tot = parseInt(gtot) - (parseInt(gtot) * (parseInt(GTAX) / 100));
+        $("#ttot").val(tot);
+        $("#paid").val(tot);
+        balcheck();
+
+    }
+    function NewSalesSubmit() {
+
+        var x = true;
+        while (x) {
+            //alert($("#image").val());
+            captureImage();
+            if (confirm("Please Bring All The products Nearer To Camera So that you can make a Snap of All Product , would you like to make Sales ?")) {
+
+                captureImage();
+
+
+                if (confirm("Are You Happy with the Snap Like to Take Another? ")) {
+                    $.ajax({
+                        url: '/Home/newsalesSub',
+                        type: 'POST',
+                        data: {
+                            'tamt': $("#tamt").val(),
+                            'ttax': $("#ttax").val(),
+                            'ttot': $("#ttot").val(),
+                            'cltname': $("#cltname").val(),
+                            'paid': $("#paid").val(),
+                            'bal': $("#bal").val(),
+                            'cusname': $("#cusname").val(),
+                            'image': $("#image").val()
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+
+                            var x = document.getElementById("snackbar");
+                            x.innerHTML = "Product Saled Sucessfully ...";
+                            x.style.backgroundColor = "#4BB543";
+                            x.className = "show";
+                            setTimeout(function () { x.className = x.className.replace("show", ""); }, 6000);
+                            data.length = 0;
+                            sktd = JSON.stringify(data);
+
+                            renderdata();
+
+                        },
+                        error: function (request, error) {
+                            var x = document.getElementById("snackbar");
+                            x.innerHTML = request.responseText;
+                            x.style.backgroundColor = "#ff0011";
+                            x.className = "show";
+                            setTimeout(function () { x.className = x.className.replace("show", ""); }, 6000);
+
+                        }
+                    });
+                    x = false;
+                }
+                else {
+                    x = true;
+                }
+
+
+
+            }
+            else {
+                x = false;
+            }
+        }
+
+    }
+
+</script>

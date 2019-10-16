@@ -1,0 +1,34 @@
+﻿@{
+
+}
+<form method="post" asp-action="addprodsalesub" asp-controller="Home">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+
+                <label class="required">Select Product</label>
+                <select name="pid" required class="form-control select2" style="width: 60%;">
+                    <option value="">Please Select</option>
+                    @foreach (var itm in ViewBag.prd)
+                    {
+                        <option value="@itm.pid">@itm.name</option>
+                    }
+
+                </select>
+
+            </div>
+
+            <div class="form-group">
+                <label class="required">Quantity</label>
+                <input name="qty" id="qty" type="text" required class="form-control" style="width: 60%;">
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <button type="reset" class="btn  btn-primary">Cancel</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+</form>

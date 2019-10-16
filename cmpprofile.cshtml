@@ -1,0 +1,153 @@
+﻿@{
+    ViewBag.title = "Company Profile";
+}
+
+<script>
+    var sts = '@ViewBag.sts';
+    $(document).ready(function () {
+        if (sts != "") {
+           var x = document.getElementById("snackbar");
+            x.innerHTML = sts;
+            if (sts.includes("Successfully")) {
+                x.style.backgroundColor = "#4BB543";
+            }
+            else {
+                x.style.backgroundColor = "#ff0011";
+            }
+            
+            x.className = "show";
+            setTimeout(function () { x.className = x.className.replace("show", ""); }, 6000);
+        }
+    });
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+</script>
+<section class="content-header">
+    <h1>
+        Company Profile
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-edit"></i>Masters</a></li>
+        <li class="active">Company Profile</li>
+    </ol>
+</section>
+@model stockManagement.Models.company
+<!-- Main content -->
+<section class="content">
+
+    <!-- SELECT2 EXAMPLE -->
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Company Profile</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <form asp-action="Companyupd" method="post" enctype="multipart/form-data" asp-controller="Home">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" value="@Model.name" required name="name" id="name" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Address</label>
+                            <textarea type="text" required name="addr" id="addr" class="form-control">@Model.address</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">state</label>
+                            <select name="state" required class="form-control select2" style="width: 100%;">
+                                <option value="">Please Select</option>
+                                @foreach (var itm in ViewBag.stat)
+                                {
+                                    if (Model.state == itm.name)
+                                    {
+                                        <option selected value="@itm.name">@itm.name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@itm.name">@itm.name</option>
+                                    }
+
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>E-Mail</label>
+                            <input type="text" required name="email" value="@Model.email" id="email" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Web</label>
+                            <input name="web" value="@Model.web" type="text" id="web" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Contact</label>
+                            <input type="text" required id="contact" value="@Model.contact" name="contact" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>PAN Number</label>
+                            <input type="text" required id="pan" name="pan" value="@Model.pan" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label>GST</label>
+                            <input type="text" required name="gst" id="gst" value="@Model.gst" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>HSN</label>
+                            <input type="text" required name="hsn" id="hsn" value="@Model.hsn" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Bank Name</label>
+                            <input type="text" required name="bankname" id="bankname" value="@Model.bankname" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Account Number</label>
+                            <input type="text" required name="accno" id="accno" value="@Model.bankaccno" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Bank Branch</label>
+                            <input type="text" required name="bankbrnch" id="bankbrnch" value="@Model.bankbranch" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>IFSC</label>
+                            <input type="text" required name="ifsc" id="ifsc" value="@Model.ifsc" class="form-control">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <button type="reset" class="btn  btn-primary">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- /.row -->
+        </div>
+        <!-- /.box-body -->
+
+    </div>
+    <!-- /.box -->
+</section>
+
+
+
+

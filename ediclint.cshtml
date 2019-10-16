@@ -1,0 +1,108 @@
+﻿@{
+
+}
+<script>
+    $('.select2').select2();
+</script>
+<script>
+
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+</script>
+<style>
+    .required:after {
+        content: "  *";
+        font-weight: bold;
+        color: red;
+    }
+</style>
+@model stockManagement.Models.client
+<form asp-action="ClientUpdate" method="post" enctype="multipart/form-data" asp-controller="Home">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="required">Name</label>
+                <input type="text" value="@Model.name" required name="name" id="name" class="form-control">
+                <input type="hidden" value="@Model.ID" required name="ID" id="ID" class="form-control">
+            </div>
+
+
+
+            <div class="form-group">
+                <label class="required">Gender</label>
+                <select name="gender" required class="form-control select2" style="width: 100%;">
+                    <option value="">Please Select</option>
+                    @if (Model.gender == "Male")
+                    {
+                        <option selected value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    }
+                    else
+                    {
+                        <option value="Male">Male</option>
+                        <option selected value="Female">Female</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="required">Contact Number</label>
+                <input type="text" value="@Model.phone" name="phone" required id="mobile" onkeypress="return isNumberKey(event)" maxlength="10" class="form-control">
+            </div>
+            <div class="form-group">
+                <label class="required">e-Mail</label>
+                <input name="email" value="@Model.email" required type="email" id="email" class="form-control">
+            </div>
+
+
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="required">GST</label>
+                <input type="text" value="@Model.gst" name="gst" id="gst" class="form-control">
+            </div>
+
+
+            <div class="form-group">
+                <label class="required">PAN</label>
+                <input type="text" value="@Model.pan" name="pan" id="pan" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label class="required">Address</label>
+                <textarea type="text" id="address" name="address" class="form-control" required>@Model.address</textarea>
+            </div>
+            <div class="form-group">
+                <label class="required">state</label>
+                <select name="state" required class="form-control select2" style="width: 100%;">
+                    <option value="">Please Select</option>
+                    @foreach (var itm in ViewBag.stat)
+                    {
+                        @if (Model.state == itm)
+                        {
+                            <option selected value="@itm">@itm</option>
+                        }
+                        else
+                        {
+                            <option value="@itm">@itm</option>
+                        }
+
+                    }
+                </select>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <button type="reset" class="btn  btn-primary">Cancel</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+</form>
