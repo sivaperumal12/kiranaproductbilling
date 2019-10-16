@@ -1,6 +1,8 @@
 # kiranaproductbilling 
 
-TCS Inframind season 3
+TCS Inframind season 3  
+
+domain Edge Computing.
 
 
 developed image processing and web application code by sivasankar(CT20192755023) and Rajkumar(CT20192755217)
